@@ -1,0 +1,51 @@
+{
+	"$schema": "http://json.schemastore.org/template",
+	"author": "Pavel Danov",
+	"classifications": [
+		"WebAPI",
+		"C#9"
+	],
+	"identity": "xxAMIDOxx.xxSTACKSxx",
+	"sourceName": "xxAMIDOxx.xxSTACKSxx",
+	"name": "Pavel Danov Multiple Projects",
+	"shortName": "pid-multiple",
+	"tags": {
+		"language": "C#",
+		"type": "project"
+	},
+	"symbols": {
+		"ENABLE_CQRS": {
+			"type": "parameter",
+			"dataType": "bool",
+			"defaultValue": "false"
+		}
+	},
+	"sources": [
+		{
+			"modifiers": [
+				{
+					"condition": "(!ENABLE_CQRS)",
+					"exclude": []
+				}
+			]
+		}
+	],
+	"postActions": [
+		{
+			"condition": "(ENABLE_CQRS)",
+			"description": "Adding Reference to xxAMIDOxx.xxSTACKSxx.CQRS project",
+			"actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
+			"continueOnError": false,
+			"manualInstructions": [
+				{
+					"text": "Manually add the reference to xxAMIDOxx.xxSTACKSxx.CQRS to your project file"
+				}
+			],
+			"args": {
+				"referenceType": "project",
+				"reference": "../xxAMIDOxx.xxSTACKSxx.CQRS/xxAMIDOxx.xxSTACKSxx.CQRS.csproj",
+				"projectFileExtensions": ".csproj"
+			}
+		}
+	]
+}

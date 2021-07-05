@@ -20,12 +20,19 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
     [ApiExplorerSettings(GroupName = "Category")]
     public class AddMenuCategoryController : ApiControllerBase
     {
+
+#if (ENABLE_CQRS)
         readonly ICommandHandler<CreateCategory, Guid> commandHandler;
 
         public AddMenuCategoryController(ICommandHandler<CreateCategory, Guid> commandHandler)
         {
             this.commandHandler = commandHandler;
         }
+#else
+        public AddMenuCategoryController()
+        {
+        }
+#endif
 
         /// <summary>
         /// Create a category in the menu
@@ -40,20 +47,24 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
         [HttpPost("/v1/menu/{id}/category/")]
         [Authorize]
         [ProducesResponseType(typeof(ResourceCreatedResponse), StatusCodes.Status201Created)]
-        public async Task<IActionResult> AddMenuCategory([FromRoute][Required]Guid id, [FromBody]CreateCategoryRequest body)
+        public async Task<IActionResult> AddMenuCategory([FromRoute][Required] Guid id, [FromBody] CreateCategoryRequest body)
         {
             // NOTE: Please ensure the API returns the response codes annotated above
 
-            var categoryId = await commandHandler.HandleAsync(
-                new CreateCategory(
-                    correlationId: GetCorrelationId(),
-                    menuId: id,
-                    name: body.Name,
-                    description: body.Description
-                )
-            );
+#if (ENABLE_CQRS)
+		var categoryId = await commandHandler.HandleAsync(
+				new CreateCategory(
+					correlationId: GetCorrelationId(),
+					menuId: id,
+					name: body.Name,
+					description: body.Description
+				)
+			);
 
-            return StatusCode(StatusCodes.Status201Created, new ResourceCreatedResponse(categoryId));
+			return StatusCode(StatusCodes.Status201Created, new ResourceCreatedResponse(categoryId));
+#else
+            return StatusCode(StatusCodes.Status201Created);
+#endif
         }
     }
 }
