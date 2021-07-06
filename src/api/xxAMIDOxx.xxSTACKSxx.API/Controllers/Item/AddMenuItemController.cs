@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Amido.Stacks.Application.CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Requests;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Responses;
+#if (ENABLE_CQRS)
+using Amido.Stacks.Application.CQRS.Commands;
 using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
+#endif
 
 namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
 {
@@ -20,12 +22,19 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
     [ApiExplorerSettings(GroupName = "Item")]
     public class AddMenuItemController : ApiControllerBase
     {
-        readonly ICommandHandler<CreateMenuItem, Guid> commandHandler;
+#if (ENABLE_CQRS)
+    	readonly ICommandHandler<CreateMenuItem, Guid> commandHandler;
 
         public AddMenuItemController(ICommandHandler<CreateMenuItem, Guid> commandHandler)
         {
             this.commandHandler = commandHandler;
         }
+#else
+        public AddMenuItemController()
+        {
+        }
+#endif
+
 
         /// <summary>
         /// Create an item to a category in the menu
@@ -41,10 +50,10 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
         [HttpPost("/v1/menu/{id}/category/{categoryId}/items/")]
         [Authorize]
         [ProducesResponseType(typeof(ResourceCreatedResponse), 201)]
-        public async Task<IActionResult> AddMenuItem([FromRoute][Required]Guid id, [FromRoute][Required]Guid categoryId, [FromBody]CreateItemRequest body)
+        public async Task<IActionResult> AddMenuItem([FromRoute][Required] Guid id, [FromRoute][Required] Guid categoryId, [FromBody] CreateItemRequest body)
         {
             // NOTE: Please ensure the API returns the response codes annotated above
-
+#if (ENABLE_CQRS)
             var menuItemId = await commandHandler.HandleAsync(
                 new CreateMenuItem(
                     correlationId: GetCorrelationId(),
@@ -56,7 +65,9 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
                     available: body.Available
                 )
             );
-
+#else
+            var menuItemId = Guid.NewGuid();
+#endif
             return StatusCode(StatusCodes.Status201Created, new ResourceCreatedResponse(menuItemId));
         }
     }

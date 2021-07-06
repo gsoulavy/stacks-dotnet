@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Amido.Stacks.Application.CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Requests;
+#if (ENABLE_CQRS)
+using Amido.Stacks.Application.CQRS.Commands;
 using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
+#endif
 
 namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
 {
@@ -17,12 +19,20 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
     [ApiExplorerSettings(GroupName = "Category")]
     public class UpdateMenuCategoryController : ApiControllerBase
     {
-        readonly ICommandHandler<UpdateCategory, bool> commandHandler;
+
+#if (ENABLE_CQRS)
+    	readonly ICommandHandler<UpdateCategory, bool> commandHandler;
 
         public UpdateMenuCategoryController(ICommandHandler<UpdateCategory, bool> commandHandler)
         {
             this.commandHandler = commandHandler;
         }
+#else
+        public UpdateMenuCategoryController()
+        {
+        }
+#endif
+
 
         /// <summary>
         /// Update a category in the menu
@@ -37,10 +47,10 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
         /// <response code="409">Conflict, an item already exists</response>
         [HttpPut("/v1/menu/{id}/category/{categoryId}")]
         [Authorize]
-        public async Task<IActionResult> UpdateMenuCategory([FromRoute][Required]Guid id, [FromRoute][Required]Guid categoryId, [FromBody]UpdateCategoryRequest body)
+        public async Task<IActionResult> UpdateMenuCategory([FromRoute][Required] Guid id, [FromRoute][Required] Guid categoryId, [FromBody] UpdateCategoryRequest body)
         {
             // NOTE: Please ensure the API returns the response codes annotated above
-
+#if (ENABLE_CQRS)
             await commandHandler.HandleAsync(
                 new UpdateCategory(
                     correlationId: GetCorrelationId(),
@@ -50,6 +60,7 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
                     description: body.Description
                 )
             );
+#endif
 
             return StatusCode(204);
         }

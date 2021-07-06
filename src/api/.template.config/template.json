@@ -1,14 +1,14 @@
 {
 	"$schema": "http://json.schemastore.org/template",
-	"author": "Pavel Danov",
+	"author": "Amido",
 	"classifications": [
 		"WebAPI",
 		"C#9"
 	],
 	"identity": "xxAMIDOxx.xxSTACKSxx",
 	"sourceName": "xxAMIDOxx.xxSTACKSxx",
-	"name": "Pavel Danov Multiple Projects",
-	"shortName": "pid-multiple",
+	"name": "Stacks WebAPI",
+	"shortName": "stacks-webapi",
 	"tags": {
 		"language": "C#",
 		"type": "project"
@@ -25,7 +25,12 @@
 			"modifiers": [
 				{
 					"condition": "(!ENABLE_CQRS)",
-					"exclude": []
+					"exclude": [
+						"**/xxAMIDOxx.xxSTACKSxx.Infrastructure/**",
+						"**/xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests/**",
+						"**/xxAMIDOxx.xxSTACKSxx.API.ContractTests/**",
+						"**/xxAMIDOxx.xxSTACKSxx.API.ComponentTests/**"
+					]
 				}
 			]
 		}
@@ -33,17 +38,124 @@
 	"postActions": [
 		{
 			"condition": "(ENABLE_CQRS)",
+			"description": "Add xxAMIDOxx.xxSTACKSxx.Infrastructure project to solution",
+			"manualInstructions": [
+				{
+					"text": "Add generated project to solution manually."
+				}
+			],
+			"args": {
+				"projectFiles": [
+					"xxAMIDOxx.xxSTACKSxx.Infrastructure.csproj"
+				]
+			},
+			"actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
+			"continueOnError": true
+		},
+		{
+			"condition": "(ENABLE_CQRS)",
+			"description": "Add xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests project to solution",
+			"manualInstructions": [
+				{
+					"text": "Add generated project to solution manually."
+				}
+			],
+			"args": {
+				"projectFiles": [
+					"xxAMIDOxx.xxSTACKSxx.Infrastructure.IntegrationTests.csproj"
+				]
+			},
+			"actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
+			"continueOnError": true
+		},
+		{
+			"condition": "(ENABLE_CQRS)",
+			"description": "Add xxAMIDOxx.xxSTACKSxx.API.ComponentTests project to solution",
+			"manualInstructions": [
+				{
+					"text": "Add generated project to solution manually."
+				}
+			],
+			"args": {
+				"projectFiles": [
+					"xxAMIDOxx.xxSTACKSxx.API.ComponentTests.csproj"
+				]
+			},
+			"actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
+			"continueOnError": true
+		},
+		{
+			"condition": "(ENABLE_CQRS)",
+			"description": "Add xxAMIDOxx.xxSTACKSxx.API.ContractTests project to solution",
+			"manualInstructions": [
+				{
+					"text": "Add generated project to solution manually."
+				}
+			],
+			"args": {
+				"solutionFolder": "src",
+				"projectFiles": [
+					"xxAMIDOxx.xxSTACKSxx.API.ContractTests.csproj"
+				]
+			},
+			"actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
+			"continueOnError": true
+		},
+		{
+			"condition": "(ENABLE_CQRS)",
+			"description": "Adding Reference to xxAMIDOxx.xxSTACKSxx.Infrastructure project",
+			"actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
+			"continueOnError": true,
+			"manualInstructions": [
+				{
+					"text": "Manually add the reference to xxAMIDOxx.xxSTACKSxx.Infrastructure to your project file"
+				}
+			],
+			"args": {
+				"targetFiles": [
+					"xxAMIDOxx.xxSTACKSxx.API.csproj"
+				],
+				"referenceType": "project",
+				"reference": "xxAMIDOxx.xxSTACKSxx.Infrastructure/xxAMIDOxx.xxSTACKSxx.Infrastructure.csproj",
+				"projectFileExtensions": ".csproj"
+			}
+		},
+		{
+			"condition": "(ENABLE_CQRS)",
 			"description": "Adding Reference to xxAMIDOxx.xxSTACKSxx.CQRS project",
 			"actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
-			"continueOnError": false,
+			"continueOnError": true,
 			"manualInstructions": [
 				{
 					"text": "Manually add the reference to xxAMIDOxx.xxSTACKSxx.CQRS to your project file"
 				}
 			],
 			"args": {
+				"targetFiles": [
+					"xxAMIDOxx.xxSTACKSxx.API.csproj"
+				],
 				"referenceType": "project",
-				"reference": "../xxAMIDOxx.xxSTACKSxx.CQRS/xxAMIDOxx.xxSTACKSxx.CQRS.csproj",
+				"reference": "xxAMIDOxx.xxSTACKSxx.CQRS/xxAMIDOxx.xxSTACKSxx.CQRS.csproj",
+				"projectFileExtensions": ".csproj"
+			}
+		},
+		{
+			"condition": "(ENABLE_CQRS)",
+			"description": "Adding Reference to Amido.Stacks.Application.CQRS.Abstractions package",
+			"actionId": "B17581D1-C5C9-4489-8F0A-004BE667B814",
+			"continueOnError": false,
+			"manualInstructions": [
+				{
+					"text": "Manually add the reference to Amido.Stacks.Application.CQRS.Abstractions to your project file"
+				}
+			],
+			"args": {
+				"targetFiles": [
+					"xxAMIDOxx.xxSTACKSxx.API.csproj"
+				],
+				"referenceType": "package",
+				"reference": "Amido.Stacks.Application.CQRS.Abstractions",
+				"version": "0.2.11",
 				"projectFileExtensions": ".csproj"
 			}
 		}

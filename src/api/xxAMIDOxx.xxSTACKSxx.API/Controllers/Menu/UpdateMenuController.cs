@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Amido.Stacks.Application.CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Requests;
+#if (ENABLE_CQRS)
+using Amido.Stacks.Application.CQRS.Commands;
 using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
+#endif
 
 namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
 {
@@ -18,12 +20,19 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
     [ApiController]
     public class UpdateMenuController : ApiControllerBase
     {
+#if (ENABLE_CQRS)
         readonly ICommandHandler<UpdateMenu, bool> commandHandler;
 
         public UpdateMenuController(ICommandHandler<UpdateMenu, bool> commandHandler)
         {
             this.commandHandler = commandHandler;
         }
+#else
+        public UpdateMenuController()
+        {
+
+        }
+#endif
 
 
         /// <summary>
@@ -37,10 +46,10 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
         /// <response code="404">Resource not found</response>
         [HttpPut("/v1/menu/{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateMenu([FromRoute][Required]Guid id, [FromBody]UpdateMenuRequest body)
+        public async Task<IActionResult> UpdateMenu([FromRoute][Required] Guid id, [FromBody] UpdateMenuRequest body)
         {
             // NOTE: Please ensure the API returns the response codes annotated above
-
+#if (ENABLE_CQRS)
             await commandHandler.HandleAsync(
                 new UpdateMenu()
                 {
@@ -49,6 +58,7 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
                     Description = body.Description,
                     Enabled = body.Enabled
                 });
+#endif
 
             return StatusCode(204);
         }

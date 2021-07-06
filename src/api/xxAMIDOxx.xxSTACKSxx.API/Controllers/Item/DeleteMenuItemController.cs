@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Amido.Stacks.Application.CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+#if (ENABLE_CQRS)
+using Amido.Stacks.Application.CQRS.Commands;
 using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
+#endif
 
 namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
 {
@@ -16,12 +18,19 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
     [ApiExplorerSettings(GroupName = "Item")]
     public class DeleteMenuItemController : ApiControllerBase
     {
+#if (ENABLE_CQRS)
         readonly ICommandHandler<DeleteMenuItem, bool> commandHandler;
 
         public DeleteMenuItemController(ICommandHandler<DeleteMenuItem, bool> commandHandler)
         {
             this.commandHandler = commandHandler;
         }
+#else
+        public DeleteMenuItemController()
+        {
+
+        }
+#endif
 
         /// <summary>
         /// Removes an item from menu
@@ -35,10 +44,10 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
         /// <response code="404">Resource not found</response>
         [HttpDelete("/v1/menu/{id}/category/{categoryId}/items/{itemId}")]
         [Authorize]
-        public async Task<IActionResult> DeleteMenuItem([FromRoute][Required]Guid id, [FromRoute][Required]Guid categoryId, [FromRoute][Required]Guid itemId)
+        public async Task<IActionResult> DeleteMenuItem([FromRoute][Required] Guid id, [FromRoute][Required] Guid categoryId, [FromRoute][Required] Guid itemId)
         {
             // NOTE: Please ensure the API returns the response codes annotated above
-
+#if (ENABLE_CQRS)
             await commandHandler.HandleAsync(
                 new DeleteMenuItem(
                     correlationId: GetCorrelationId(),
@@ -47,6 +56,7 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
                     menuItemId: itemId
                 )
             );
+#endif
 
             return StatusCode(204);
         }

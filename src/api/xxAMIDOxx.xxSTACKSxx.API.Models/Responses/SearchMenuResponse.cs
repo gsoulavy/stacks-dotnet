@@ -16,6 +16,6 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Models.Responses
         /// <summary>
         /// Contains the items returned from the search
         /// </summary>
-        public List<SearchMenuResultItem> Results { get; set; }
+        public List<SearchMenuResponseItem> Results { get; set; }
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Amido.Stacks.Application.CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Requests;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Responses;
+#if (ENABLE_CQRS)
+using Amido.Stacks.Application.CQRS.Commands;
 using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
+#endif
 
 namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
 {
@@ -19,12 +21,19 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
     [ApiController]
     public class CreateMenuController : ApiControllerBase
     {
+#if (ENABLE_CQRS)
         readonly ICommandHandler<CreateMenu, Guid> commandHandler;
 
         public CreateMenuController(ICommandHandler<CreateMenu, Guid> commandHandler)
         {
             this.commandHandler = commandHandler;
         }
+#else
+        public CreateMenuController()
+        {
+
+        }
+#endif
 
         /// <summary>
         /// Create a menu
@@ -37,10 +46,10 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
         [HttpPost("/v1/menu/")]
         [Authorize]
         [ProducesResponseType(typeof(ResourceCreatedResponse), 201)]
-        public async Task<IActionResult> CreateMenu([Required][FromBody]CreateMenuRequest body)
+        public async Task<IActionResult> CreateMenu([Required][FromBody] CreateMenuRequest body)
         {
             // NOTE: Please ensure the API returns the response codes annotated above
-
+#if (ENABLE_CQRS)
             var id = await commandHandler.HandleAsync(
                 new CreateMenu(
                         correlationId: GetCorrelationId(),
@@ -50,7 +59,9 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
                         enabled: body.Enabled
                     )
                 );
-
+#else
+            var id = Guid.NewGuid();
+#endif
             return new CreatedAtActionResult(
                     "GetMenu", "GetMenuById", new
                     {

@@ -20,7 +20,7 @@ namespace xxAMIDOxx.xxSTACKSxx.Application.QueryHandlers
         public async Task<SearchMenuResult> ExecuteAsync(SearchMenu criteria)
         {
             if (criteria == null)
-                throw new ArgumentException("A valid SearchMenuQueryCriteria os required!");
+                throw new ArgumentException("A valid SearchMenuQueryCriteria is required!");
 
             int pageSize = 10;
             int pageNumber = 1;

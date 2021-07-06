@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Amido.Stacks.Application.CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Requests;
 using xxAMIDOxx.xxSTACKSxx.API.Models.Responses;
+#if (ENABLE_CQRS)
+using Amido.Stacks.Application.CQRS.Commands;
 using xxAMIDOxx.xxSTACKSxx.CQRS.Commands;
+#endif
 
 namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
 {
@@ -50,9 +52,8 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
         public async Task<IActionResult> AddMenuCategory([FromRoute][Required] Guid id, [FromBody] CreateCategoryRequest body)
         {
             // NOTE: Please ensure the API returns the response codes annotated above
-
 #if (ENABLE_CQRS)
-		var categoryId = await commandHandler.HandleAsync(
+			var categoryId = await commandHandler.HandleAsync(
 				new CreateCategory(
 					correlationId: GetCorrelationId(),
 					menuId: id,
@@ -60,11 +61,10 @@ namespace xxAMIDOxx.xxSTACKSxx.API.Controllers
 					description: body.Description
 				)
 			);
-
-			return StatusCode(StatusCodes.Status201Created, new ResourceCreatedResponse(categoryId));
 #else
-            return StatusCode(StatusCodes.Status201Created);
+            var categoryId = Guid.NewGuid();
 #endif
+            return StatusCode(StatusCodes.Status201Created, new ResourceCreatedResponse(categoryId));
         }
     }
 }

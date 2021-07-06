@@ -3,7 +3,9 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+#if(ENABLE_CQRS)
 using xxAMIDOxx.xxSTACKSxx.Infrastructure;
+#endif
 
 namespace xxAMIDOxx.xxSTACKSxx.API
 {
@@ -30,8 +32,10 @@ namespace xxAMIDOxx.xxSTACKSxx.API
                 })
                 .UseStartup<Startup>()
                 .UseSerilog()
+#if (ENABLE_CQRS)
                 .ConfigureServices(DependencyRegistration.ConfigureStaticDependencies)
                 .ConfigureServices(DependencyRegistration.ConfigureProductionDependencies)
+#endif
             ;
     }
 }
