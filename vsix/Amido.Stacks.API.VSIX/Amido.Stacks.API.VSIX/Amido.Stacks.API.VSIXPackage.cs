@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Task = System.Threading.Tasks.Task;
 
-namespace Amido.Stacks.VSIX
+namespace Amido.Stacks.API.VSIX
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -24,13 +24,13 @@ namespace Amido.Stacks.VSIX
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid(Amido.Stacks.VSIXPackage.PackageGuidString)]
-    public sealed class Amido.Stacks.VSIXPackage : AsyncPackage
+    [Guid(AmidoStacksAPIVSIXPackage.PackageGuidString)]
+    public sealed class AmidoStacksAPIVSIXPackage : AsyncPackage
     {
          /// <summary>
-        /// Amido.Stacks.VSIXPackage GUID string.
+        /// Amido.Stacks.API.VSIXPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "0253eba4-8651-4e59-96ed-3403630bb0fc";
+        public const string PackageGuidString = "96cef56a-e3ab-4acc-a760-89e5ec0335ae";
 
     #region Package Members
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+	<Metadata>
+		<Identity Id="Amido.Stacks.API.5b2dff93-0c56-4655-9f28-8312c96829aa" Version="1.0" Language="en-US" Publisher="Amido Ltd" />
+		<DisplayName>AmidoStacksAPI</DisplayName>
+		<Description xml:space="preserve">Simple Web API with Authorisation, Authentication, logging and middleware usign Amido Stacks packages</Description>
+		<MoreInfo>https://stacks.amido.com</MoreInfo>
+		<Icon>amido-icon.png</Icon>
+		<PreviewImage>amido-icon.png</PreviewImage>
+		<Tags>webAPI, .netCore</Tags>
+	</Metadata>
+	<Installation>
+		<InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0, 17.0)" />
+	</Installation>
+	<Dependencies>
+		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Core" d:Source="Manual" Version="[3.1,)" />
+	</Dependencies>
+	<Prerequisites>
+		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,17.0)" DisplayName="Visual Studio core editor" />
+	</Prerequisites>
+	<Assets>
+		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+		<Asset Type="Microsoft.VisualStudio.ProjectTemplate" d:Source="File" Path="ProjectTemplates" TargetVersion="1.0" d:TargetPath="ProjectTemplates\Amido.Stacks.API.zip" />
+	</Assets>
+</PackageManifest>

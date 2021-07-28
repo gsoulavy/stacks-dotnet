@@ -10,11 +10,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{89C07BA0-4BB6-49FF-9A20-38A7ABB79657}</ProjectGuid>
+    <ProjectGuid>{73EE8EAD-E4C6-4E17-8ABE-1692F212E7B7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Amido.Stacks.VSIX</RootNamespace>
-    <AssemblyName>Amido.Stacks.VSIX</AssemblyName>
+    <RootNamespace>Amido.Stacks.API.VSIX</RootNamespace>
+    <AssemblyName>Amido.Stacks.API.VSIX</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <UseCodebase>true</UseCodebase>
@@ -46,10 +46,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Amido.Stacks.VSIXPackage.cs" />
+    <Compile Include="Amido.Stacks.API.VSIXPackage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Amido.Stacks.API.zip" />
+    <Content Include="ProjectTemplates\Amido.Stacks.API.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -66,15 +70,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\api\xxAMIDOxx.xxSTACKSxx.API\xxAMIDOxx.xxSTACKSxx.API.csproj">
-      <Project>{1C8220AB-C7EE-4782-BE86-719F1457FECB}</Project>
-      <Name>xxAMIDOxx.xxSTACKSxx.API</Name>
-      <VSIXSubPath>ProjectTemplates</VSIXSubPath>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <IncludeOutputGroupsInVSIX>TemplateProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
